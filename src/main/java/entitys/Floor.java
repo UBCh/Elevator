@@ -1,3 +1,5 @@
+package entitys;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -49,24 +51,18 @@ public class Floor {
     }
 
       public String toString(String elevator) {
-          String left = editLine(getQueueCameOutOfTheElevator());
+          String left = String.valueOf(getQueueCameOutOfTheElevator().size());
           String center = elevator;
           String right = editLine(getQueueForElevator());
           return left + center + right;
       }
 
     private String editLine(Deque<Integer> deque) {
-        String space = " ";
         String result = deque.toString();
         result = result.replace('[', ' ');
         result = result.replace(']', ' ');
         result = result.replace(',', ' ');
         result.trim();
-        int caunt = 7 - deque.size();
-        for (int i = 0; i < caunt; i++) {
-            result = result + space;
-        }
-
        return result;
    }
 

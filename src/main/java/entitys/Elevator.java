@@ -1,3 +1,5 @@
+package entitys;
+
 import java.util.Arrays;
 
 public class Elevator {

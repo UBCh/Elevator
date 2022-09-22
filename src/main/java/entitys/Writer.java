@@ -1,3 +1,5 @@
+package entitys;
+
 import java.io.*;
 
 public class Writer {
