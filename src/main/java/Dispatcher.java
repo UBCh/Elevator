@@ -1,6 +1,5 @@
 import java.util.Arrays;
 import java.util.Deque;
-import java.util.stream.IntStream;
 
 
 public class Dispatcher {
@@ -32,7 +31,7 @@ public class Dispatcher {
     }
 
     public void elevatorStartManager() {
-        int start = elevatorCall();
+        int start = elevatorCallForFloor();
         Deque<Integer> firstFloor = house[start - 1].getQueueForElevator();
         for (int i = 0; i < 5; i++) {
             elevator.elevatorPassengers[i] = firstFloor.removeFirst();
@@ -47,12 +46,8 @@ public class Dispatcher {
     private void elevatorControl() {
         writer.writingToFile(toStringForWrite());
         int destinationFloor;
-//        if (elevatorCall()==0){
-//            if (!emptyElevator()){
-//                destinationFloor=elevator.sortPassengers()[0];}
-//          }
-        if (elevator.sortPassengers().length<1){
-            destinationFloor =elevatorCall();}
+        if (emptyElevator()){
+            destinationFloor = elevatorCallForFloor();}
        else {
            destinationFloor = elevator.sortPassengers()[0];}
        int[] elevatorTMP = elevator.sortPassengers();
@@ -60,7 +55,6 @@ public class Dispatcher {
        if (destinationFloor<1){return;}
         Deque<Integer> queueOnTheFloor = house[destinationFloor - 1].getQueueForElevator();
         Deque<Integer> queueTheExited = house[destinationFloor - 1].getQueueCameOutOfTheElevator();
-        writer.writingToFile(toStringForWrite());
         Arrays.stream(elevatorTMP).
                 forEach((x) ->
                 {
@@ -81,21 +75,6 @@ public class Dispatcher {
                break;}
                     }
         house[destinationFloor-1].setQueueCameOutOfTheElevator(queueTheExited);
-        int sizeElevator = elevator.sortPassengers().length;
-        if (sizeElevator >0) {
-                             elevatorControl();
-        }
-        while (!(queueOnTheFloor.isEmpty()) & elevator.sortPassengers().length <= 5) {
-            Integer firstInLine = queueOnTheFloor.pollFirst();
-            if (firstInLine == null) {
-                house[destinationFloor-1].setQueueForElevator(queueOnTheFloor);
-                writer.writingToFile(toStringForWrite());
-                elevatorControl();
-            }
-            elevator.addPassenger(firstInLine);
-        }
-        house[destinationFloor-1].setQueueForElevator(queueOnTheFloor);
-        writer.writingToFile(toStringForWrite());
         if (searchForPassengersWaitingForTransportation()) {
             elevatorControl();
         }
@@ -114,17 +93,12 @@ public class Dispatcher {
         return false;
     }
 
-    private int elevatorCall(){
+    private int elevatorCallForFloor(){
         for (int i = 0; i < numberOfFloors; i++) {
             if (!(house[i].getQueueForElevator().isEmpty())) {
                 return i+1;
             }
           }
-//        for (int i = 0; i < elevator.elevatorPassengers.length; i++){
-//            if (!(elevator.elevatorPassengers[i]==0)) {
-//                return i+1;
-//            }
-//        }
         return 0;
     }
 
