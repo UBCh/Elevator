@@ -56,9 +56,9 @@ public class Floor {
     }
 
    private String spaceFilling(Deque <Integer> deque){
-       String space=".";
+       String space="_";
        String result=deque.toString();
-       int caunt=floorNumberMax-deque.size();
+       int caunt=7-deque.size();
        for (int i = 0; i < caunt; i++) {
          result=result+space;
        }
