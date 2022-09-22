@@ -25,7 +25,7 @@ public class Dispatcher {
               return house;
     }
 
-    public int setNumberOfFloors() {
+    private int setNumberOfFloors() {
         int nOf = (int) ((Math.random() * 20) + 2);
         return nOf > 20 ? 20 : nOf;
     }
@@ -106,11 +106,11 @@ public class Dispatcher {
     private String[] toStringForWrite() {
         String [] result= new String [numberOfFloors];
         for (int i = 0; i < numberOfFloors; i++) {
-          result[i]=house[i].toString(elevator.toString());
-        }
-
+        result[i]=house[i].toString(elevator.toString());}
         return result;
     }
+
+
      private boolean emptyElevator(){
         boolean w=Arrays.stream(elevator.elevatorPassengers).allMatch(x->x==0);
       if (w){ return true;}

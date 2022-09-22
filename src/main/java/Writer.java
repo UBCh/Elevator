@@ -1,7 +1,7 @@
 import java.io.*;
 
 public class Writer {
-    String path = "src/main/resources/output";
+     private String path = "src/main/resources/output";
 
 
     public void writingToFile(String[] toStringForWrite) {

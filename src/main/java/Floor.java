@@ -49,23 +49,23 @@ public class Floor {
     }
 
       public String toString(String elevator) {
-      String left=spaceFilling(getQueueCameOutOfTheElevator());
-      String center=elevator;
-      String right=spaceFilling(getQueueForElevator());
-        return left+center+right ;
-    }
+          String left = editLine(getQueueCameOutOfTheElevator());
+          String center = elevator;
+          String right = editLine(getQueueForElevator());
+          return left + center + right;
+      }
 
-   private String spaceFilling(Deque <Integer> deque){
-       String space=" ";
-       String result=deque.toString();
-       result=result.replace('[' ,' ');
-       result=result.replace(']' ,' ');
-       result=result.replace(',' ,' ');
-       result.trim();
-       int caunt=7-deque.size();
-       for (int i = 0; i < caunt; i++) {
-         result=result+space;
-       }
+    private String editLine(Deque<Integer> deque) {
+        String space = " ";
+        String result = deque.toString();
+        result = result.replace('[', ' ');
+        result = result.replace(']', ' ');
+        result = result.replace(',', ' ');
+        result.trim();
+        int caunt = 7 - deque.size();
+        for (int i = 0; i < caunt; i++) {
+            result = result + space;
+        }
 
        return result;
    }
