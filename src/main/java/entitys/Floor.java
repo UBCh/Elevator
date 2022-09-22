@@ -50,20 +50,17 @@ public class Floor {
         return result;
     }
 
-      public String toString(String elevator) {
-          String left = String.valueOf(getQueueCameOutOfTheElevator().size());
-          String center = elevator;
-          String right = editLine(getQueueForElevator());
-          return left + center + right;
+      public String toString() {
+          String result = getQueueForElevator().toString();
+          result = result.replace('[', ' ');
+          result = result.replace(']', ' ');
+          result = result.replace(',', ' ');
+          result.trim();
+          return result;
+
+
       }
 
-    private String editLine(Deque<Integer> deque) {
-        String result = deque.toString();
-        result = result.replace('[', ' ');
-        result = result.replace(']', ' ');
-        result = result.replace(',', ' ');
-        result.trim();
-       return result;
-   }
+
 
 }

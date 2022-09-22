@@ -6,6 +6,7 @@ import entitys.Writer;
 
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.OptionalInt;
 
 
 public class Dispatcher {
@@ -70,21 +71,21 @@ public class Dispatcher {
                     }
                 });
         writer.writingToFile(toStringForWrite());
-        while (elevator.sortPassengers().length < 5) {
+        while (elevator.sortPassengers().length <= 5) {
             if (queueOnTheFloor.isEmpty()) {
                          elevatorControl(); }
             Integer passFirst=queueOnTheFloor.pollFirst();
             if (passFirst!=null) {
                elevator.addPassenger(passFirst);
                          }
-           else{
-               break;}
-                    }
+             else if (passFirst==null){
+                 break;}
+        }
         house[destinationFloor-1].setQueueCameOutOfTheElevator(queueTheExited);
         if (searchForPassengersWaitingForTransportation()) {
             elevatorControl();
         }
-            }
+            return; }
 
     private boolean searchForPassengersWaitingForTransportation() {
         var f = elevator.sortPassengers().length;
@@ -111,15 +112,19 @@ public class Dispatcher {
 
     private String[] toStringForWrite() {
         String [] result= new String [numberOfFloors];
-        for (int i = 0; i < numberOfFloors; i++) {
-        result[i]=house[i].toString(elevator.toString());}
+         for (int i = 0; i < numberOfFloors; i++) {
+         String left= String.valueOf(house[i].getQueueCameOutOfTheElevator().size());
+         String right= house[i].toString();
+         String centre=1!=i?"[               ]":elevator.toString();
+         result[i]=left+centre+right;
+        }
         return result;
     }
 
 
      private boolean emptyElevator(){
-        boolean w=Arrays.stream(elevator.elevatorPassengers).allMatch(x->x==0);
-      if (w){ return true;}
+        boolean empty=Arrays.stream(elevator.elevatorPassengers).allMatch(x->x==0);
+      if (empty){ return true;}
          return false;
      }
 
