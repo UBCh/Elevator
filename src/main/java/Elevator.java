@@ -10,7 +10,7 @@ public class Elevator {
     }
 
 
-    public int[] getElevatorPassengers() {
+    public int[] sortPassengers() {
         if (elevatorPassengers.length >= 2) {
             Arrays.sort(elevatorPassengers);
             elevatorPassengers = Arrays.stream(elevatorPassengers).filter(x -> x > 0).toArray();
@@ -42,4 +42,13 @@ public class Elevator {
         elevatorPassengers[tmp.length - 1] = passenger;
     }
 
+    @Override
+    public String toString() {
+       int count=5-elevatorPassengers.length;
+     if (count>0){
+         int [] tmp=Arrays.copyOf(elevatorPassengers,elevatorPassengers.length+count);
+         return Arrays.toString(tmp);
+     }
+        return Arrays.toString(elevatorPassengers);
+    }
 }

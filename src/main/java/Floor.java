@@ -4,18 +4,15 @@ import java.util.Deque;
 public class Floor {
 
 
-  private int floorNumber;
-  private int floorNumberMax;
+    private int floorNumberMax;
+    private int queueSize = (int) (Math.random() * 7);
+    private Deque<Integer> queueForElevator;
+    private Deque<Integer> queueCameOutOfTheElevator = new ArrayDeque<>();
 
-    public Floor(int floorNumber, int floorNumberMax ) {
-        this.floorNumber = floorNumber;
-        this.floorNumberMax=floorNumberMax;
-        this.queueForElevator=createQueue();
+    public Floor(int floorNumberMax) {
+        this.floorNumberMax = floorNumberMax;
+        this.queueForElevator = createQueue();
     }
-  int queueSize= (int) (Math.random()*7);
-    Deque<Integer> queueForElevator;
-   Deque<Integer> queueCameOutOfTheElevator=new ArrayDeque<>();
-
 
 
     public Deque<Integer> getQueueCameOutOfTheElevator() {
@@ -26,16 +23,6 @@ public class Floor {
         this.queueCameOutOfTheElevator = queue;
     }
 
-
-
- private Deque <Integer> createQueue(){
-     Deque <Integer>  queue=new ArrayDeque<>();
-     for (int i = 1; i < queueSize; i++) {
-             queue.add(setFloorNumberPassenger());
-     }
-        return queue ;
- }
-
     public Deque <Integer> getQueueForElevator() {
         return queueForElevator;
     }
@@ -44,13 +31,39 @@ public class Floor {
         this.queueForElevator = queueForElevator;
     }
 
+
+
+    private Deque <Integer> createQueue(){
+        Deque <Integer>  queue=new ArrayDeque<>();
+        for (int i = 1; i < queueSize; i++) {
+             queue.add(setFloorNumberPassenger());
+        }
+        return queue ;
+     }
+
+
     private int setFloorNumberPassenger() {
         int fNNumber= (int) ((Math.random()*floorNumberMax)+2);
        int result= fNNumber>floorNumberMax?floorNumberMax:fNNumber;
         return result;
     }
 
+      public String toString(String elevator) {
+      String left=spaceFilling(getQueueCameOutOfTheElevator());
+      String center=elevator;
+      String right=spaceFilling(getQueueForElevator());
+        return left+center+right ;
+    }
 
+   private String spaceFilling(Deque <Integer> deque){
+       String space=".";
+       String result=deque.toString();
+       int caunt=floorNumberMax-deque.size();
+       for (int i = 0; i < caunt; i++) {
+         result=result+space;
+       }
 
+       return result;
+   }
 
 }

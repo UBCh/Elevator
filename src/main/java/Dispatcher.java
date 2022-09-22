@@ -1,45 +1,40 @@
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.stream.IntStream;
 
 
-public class Meson {
+public class Dispatcher {
 
     Elevator elevator;
     private int numberOfFloors;
     Floor[] house;
+    Writer writer=new Writer();
 
-    public Meson() {
-        this.house=createAHouse();
+    public Dispatcher() {
+        this.numberOfFloors = setNumberOfFloors();
+        this.house = createAHouse();
+        this.elevator = new Elevator();
+
     }
 
 
     private Floor[] createAHouse() {
-        setNumberOfFloors();
-        setElevator();
         Floor[] house = new Floor[numberOfFloors];
         for (int i = 0; i < house.length; i++) {
-            house[i] = new Floor( i+1,numberOfFloors);
+            house[i] = new Floor(numberOfFloors);
         }
-        return house;
+              return house;
     }
 
-    public void setNumberOfFloors() {
+    public int setNumberOfFloors() {
         int nOf = (int) ((Math.random() * 20) + 2);
-        this.numberOfFloors = nOf > 20 ? 20 : nOf;
+        return nOf > 20 ? 20 : nOf;
     }
 
-    public Floor[] getHouse() {
-        return house;
-    }
-
-    public void setElevator() {
-        this.elevator = new Elevator();
-    }
-
-    public void callingTheElevatorToTheFirstFloor() {
-        int start=elevatorCall();
-        Deque<Integer> firstFloor = house[start-1].getQueueForElevator();
-          for (int i = 0; i < 5; i++) {
+    public void elevatorStartManager() {
+        int start = elevatorCall();
+        Deque<Integer> firstFloor = house[start - 1].getQueueForElevator();
+        for (int i = 0; i < 5; i++) {
             elevator.elevatorPassengers[i] = firstFloor.removeFirst();
             if (firstFloor.peek() == null) {
                 break;
@@ -50,13 +45,18 @@ public class Meson {
     }
 
     private void elevatorControl() {
-       if (elevatorCall()==0){ return;}
+        writer.writingToFile(toStringForWrite());
+        if (elevatorCall()==0){
+           return;}
         int destinationFloor;
-        if (elevator.getElevatorPassengers().length<1){ destinationFloor =elevatorCall();}
-       else { destinationFloor = elevator.getElevatorPassengers()[0];}
-        var elevatorTMP = elevator.getElevatorPassengers();
+        if (elevator.sortPassengers().length<1){
+            destinationFloor =elevatorCall();}
+       else {
+           destinationFloor = elevator.sortPassengers()[0];}
+       int[] elevatorTMP = elevator.sortPassengers();
         Deque<Integer> queueOnTheFloor = house[destinationFloor - 1].getQueueForElevator();
         Deque<Integer> queueTheExited = house[destinationFloor - 1].getQueueCameOutOfTheElevator();
+        writer.writingToFile(toStringForWrite());
         Arrays.stream(elevatorTMP).
                 forEach((x) ->
                 {
@@ -65,37 +65,42 @@ public class Meson {
                         elevator.deletePassenger(destinationFloor);
                     }
                 });
-        while (elevator.getElevatorPassengers().length < 5) {
+        writer.writingToFile(toStringForWrite());
+        while (elevator.sortPassengers().length < 5) {
             if (queueOnTheFloor.isEmpty()) {
-                 elevatorControl(); }
-            var u = queueOnTheFloor.pollFirst();
-           if (u!=null) {
-               elevator.addPassenger(u);}
-           else{break;}
+                         elevatorControl(); }
+            Integer passFirst=queueOnTheFloor.pollFirst();
+            if (passFirst!=null) {
+               elevator.addPassenger(passFirst);
+                         }
+           else{
+               break;}
                     }
         house[destinationFloor-1].setQueueCameOutOfTheElevator(queueTheExited);
-        int sizeElevator = elevator.getElevatorPassengers().length;
+        int sizeElevator = elevator.sortPassengers().length;
         if (sizeElevator == 5) {
-            elevatorControl();
+                             elevatorControl();
         }
-        while (!(queueOnTheFloor.isEmpty()) & elevator.getElevatorPassengers().length <= 5) {
-            var w = queueOnTheFloor.pollFirst();
-            if (w == null) {
+        while (!(queueOnTheFloor.isEmpty()) & elevator.sortPassengers().length <= 5) {
+            Integer firstInLine = queueOnTheFloor.pollFirst();
+            if (firstInLine == null) {
                 house[destinationFloor-1].setQueueForElevator(queueOnTheFloor);
+                writer.writingToFile(toStringForWrite());
                 elevatorControl();
             }
-            elevator.addPassenger(w);
+            elevator.addPassenger(firstInLine);
         }
         house[destinationFloor-1].setQueueForElevator(queueOnTheFloor);
+        writer.writingToFile(toStringForWrite());
         if (!(searchForPassengersWaitingForTransportation())) {
             return;
         }
-        elevatorControl();
+         elevatorControl();
     }
 
     private boolean searchForPassengersWaitingForTransportation() {
-        var f = elevator.getElevatorPassengers().length;
-        if (!(elevator.getElevatorPassengers().length == 0)) {
+        var f = elevator.sortPassengers().length;
+        if (!(elevator.sortPassengers().length == 0)) {
             return true;
         }
         for (int i = numberOfFloors; i >= numberOfFloors; i--) {
@@ -115,5 +120,14 @@ public class Meson {
         return 0;
     }
 
+
+    public String[] toStringForWrite() {
+        String [] result= new String [numberOfFloors];
+        for (int i = 0; i < numberOfFloors; i++) {
+          result[i]=house[i].toString(elevator.toString());
+        }
+
+        return result;
+    }
 }
 
