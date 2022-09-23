@@ -47,13 +47,22 @@ public class Elevator {
         elevatorPassengers[tmp.length - 1] = passenger;
     }
 
+    public boolean emptyElevator() {
+        boolean empty = Arrays.stream(elevatorPassengers).allMatch(x -> x == 0);
+        if (empty) {
+            return true;
+        }
+        return false;
+    }
+
+
     @Override
     public String toString() {
-       int count=5-elevatorPassengers.length;
-     if (count>0){
-         int [] tmp=Arrays.copyOf(elevatorPassengers,elevatorPassengers.length+count);
-         return Arrays.toString(tmp);
-     }
+        int count = 5 - elevatorPassengers.length;
+        if (count > 0) {
+            int[] tmp = Arrays.copyOf(elevatorPassengers, elevatorPassengers.length + count);
+            return Arrays.toString(tmp);
+        }
         return Arrays.toString(elevatorPassengers);
     }
 }

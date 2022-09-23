@@ -6,7 +6,7 @@ import entitys.Writer;
 
 import java.util.Arrays;
 import java.util.Deque;
-import java.util.OptionalInt;
+
 
 
 public class Dispatcher {
@@ -44,6 +44,7 @@ public class Dispatcher {
     public void elevatorStartManager() {
         int start = elevatorCallForFloor();
         Deque<Integer> firstFloor = house[start - 1].getQueueForElevator();
+        writer.writingToFile(toStringForWrite());
         for (int i = 0; i < 5; i++) {
             elevator.elevatorPassengers[i] = firstFloor.removeFirst();
             if (firstFloor.peek() == null) {
@@ -51,19 +52,23 @@ public class Dispatcher {
             }
         }
         house[0].setQueueForElevator(firstFloor);
+        writer.writingToFile(toStringForWrite());
         elevatorControl();
     }
 
     private void elevatorControl() {
         writer.writingToFile(toStringForWrite());
         int destinationFloor;
-        if (emptyElevator()){
-            destinationFloor = elevatorCallForFloor();}
-       else {
-           destinationFloor = elevator.sortPassengers()[0];}
-       int[] elevatorTMP = elevator.sortPassengers();
-       int tmpPassenger=destinationFloor;
-       if (destinationFloor<1){return;}
+        if (elevator.emptyElevator()) {
+            destinationFloor = elevatorCallForFloor();
+        } else {
+            destinationFloor = elevator.sortPassengers()[0];
+        }
+        int[] elevatorTMP = elevator.sortPassengers();
+        int tmpPassenger = destinationFloor;
+        if (destinationFloor < 1) {
+            return;
+        }
         Deque<Integer> queueOnTheFloor = house[destinationFloor - 1].getQueueForElevator();
         Deque<Integer> queueTheExited = house[destinationFloor - 1].getQueueCameOutOfTheElevator();
         Arrays.stream(elevatorTMP).
@@ -92,8 +97,7 @@ public class Dispatcher {
             return; }
 
     private boolean searchForPassengersWaitingForTransportation() {
-        var f = elevator.sortPassengers().length;
-        if (!(elevator.sortPassengers().length == 0)) {
+        if (!(elevator.emptyElevator())) {
             return true;
         }
         for (int i = numberOfFloors; i==0; i--) {
@@ -115,22 +119,21 @@ public class Dispatcher {
 
 
     private String[] toStringForWrite() {
-        String [] result= new String [numberOfFloors];
-         for (int i = 0; i < numberOfFloors; i++) {
-         String left= String.valueOf(house[i].getQueueCameOutOfTheElevator().size());
-         String right= house[i].toString();
-         String centre=1!=i?"[               ]":elevator.toString();
-         result[i]=left+centre+right;
+        String[] result = new String[numberOfFloors];
+        int start;
+        if (elevator.emptyElevator()) {
+            start = 0;
+        } else {
+            start = elevator.sortPassengers()[0];
+        }
+        for (int i = 0; i < numberOfFloors; i++) {
+            String left = String.valueOf(house[i].getQueueCameOutOfTheElevator().size());
+            String right = house[i].toString();
+            String centre = start != i ? "[               ]" : elevator.toString();
+            result[i] = left + centre + right;
         }
         return result;
     }
-
-
-     private boolean emptyElevator(){
-        boolean empty=Arrays.stream(elevator.elevatorPassengers).allMatch(x->x==0);
-      if (empty){ return true;}
-         return false;
-     }
 
 }
 

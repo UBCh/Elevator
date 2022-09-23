@@ -1,8 +1,10 @@
 package entitys;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Writer {
+
      private String path = "output.txt";
 
 
