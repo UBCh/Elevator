@@ -3,7 +3,7 @@ package entitys;
 import java.io.*;
 
 public class Writer {
-     private String path = "src/main/resources/output";
+     private String path = "output.txt";
 
 
     public void writingToFile(String[] toStringForWrite) {
@@ -14,7 +14,7 @@ public class Writer {
             stringBuilder.append(tmp[i]).append("\n");
            }
             try {
-                FileWriter writer = new FileWriter("output.txt", true);
+                FileWriter writer = new FileWriter(path, true);
                 stringBuilder.append("++++++++++++++++++++++step++++++++++++++++++++++++++++++++").append("\n");
                 writer.append(stringBuilder);
                 writer.close();
