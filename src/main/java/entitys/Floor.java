@@ -5,9 +5,9 @@ import java.util.Deque;
 
 public class Floor {
 
-
+    static int limitQueue;
     private int floorNumberMax;
-    private int queueSize = (int) (Math.random() * 7);
+    private int queueSize = (int) (Math.random() * limitQueue);
     private Deque<Integer> queueForElevator;
     private Deque<Integer> queueCameOutOfTheElevator = new ArrayDeque<>();
 
@@ -16,6 +16,9 @@ public class Floor {
         this.queueForElevator = createQueue();
     }
 
+    public static void setLimitQueue(int limQueue) {
+       limitQueue = limQueue;
+    }
 
     public Deque<Integer> getQueueCameOutOfTheElevator() {
         return queueCameOutOfTheElevator;

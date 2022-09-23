@@ -11,6 +11,7 @@ import java.util.OptionalInt;
 
 public class Dispatcher {
 
+    private static int limitLastFloor;
     Elevator elevator;
     private int numberOfFloors;
     Floor[] house;
@@ -23,6 +24,9 @@ public class Dispatcher {
 
     }
 
+    public static void setLimitLastFloor(int limitFloor) {
+        limitLastFloor = limitFloor;
+    }
 
     private Floor[] createAHouse() {
         Floor[] house = new Floor[numberOfFloors];
@@ -33,8 +37,8 @@ public class Dispatcher {
     }
 
     private int setNumberOfFloors() {
-        int nOf = (int) ((Math.random() * 20) + 2);
-        return nOf > 20 ? 20 : nOf;
+        int nOf = (int) ((Math.random() * limitLastFloor) + 2);
+        return nOf > limitLastFloor ? limitLastFloor : nOf;
     }
 
     public void elevatorStartManager() {

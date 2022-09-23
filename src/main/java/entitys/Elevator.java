@@ -4,13 +4,16 @@ import java.util.Arrays;
 
 public class Elevator {
 
-    private final int maximumLoad = 5;
+    static int maximumLoad;
     public int[] elevatorPassengers = new int[maximumLoad];
 
 
     public Elevator() {
     }
 
+    public static void setMaximumLoad(int maxLoad) {
+        maximumLoad = maxLoad;
+    }
 
     public int[] sortPassengers() {
         if (elevatorPassengers.length >= 2) {
