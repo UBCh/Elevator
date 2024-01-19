@@ -10,6 +10,8 @@ public class Controller {
 	loader.setConfigurations();
 	Dispatcher dispatcher =new Dispatcher();
         dispatcher.elevatorStartManager();
+
+
    }
 
 
